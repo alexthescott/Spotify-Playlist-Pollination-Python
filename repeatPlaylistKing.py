@@ -29,7 +29,8 @@ filterList = ["To-Do List (now)", "To-Do List (later)", "math's vault", "Sadboys
 "Running late march brockhampton type beat (163-173 BPM halftime)", "Running dirty indie pop type beat (163-173 BPM)", "Running sadboy indie garbage type beat (163-173 BPM)",
 "Running bedroom pop / DOOM mix (82-87 BPM)", "Running math's valult grab bag (163-173 BPM)", "Running floorida indie rap type beat (163-173 BPM)",
 "Running alt laptop indie pop type beat (163-173 BPM)", "Running alt boom bap type beat (162-172 BPM)", "Running bass music grab bag (162-172 BPM)",
-"Running high energy grab bag (163-173 BPM)", "SalviaFunkSpotifyRemix", "Running sweet as honey type beat (165-175 BPM)"]
+"Running high energy grab bag (163-173 BPM)", "SalviaFunkSpotifyRemix", "Running sweet as honey type beat (165-175 BPM)", "Apathetic Cloudy Garbage (163 - 173 BPM)",
+"ChillBoomBap @G (163 - 173 BPM Halftime)"]
 
 # My "archive time period" playlists
 extraFilterList = ["Junior", "Sophomore", "Freshman", "HS Junior", "HS Senior", "7-10 grade", "TheIndieBlog"]
