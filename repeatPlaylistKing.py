@@ -19,21 +19,12 @@ repeatCount = [0]
 
 # Quality of life improvements
 arbitraryFilter = True
-extraNiceArbitraryFilter = True
 
 # To-Do Playlists, Sadboys, and every running playlist
-filterList = ["To-Do List (now)", "To-Do List (later)", "math's vault", "Sadboys", "Running best of (163-173 BPM)",
-"Phantom Desperado Drum Machine Buff (163-173 BPM)", "Cheese and alternative dishes (163-173 BPM)", "australian indie mishmash  (163-173 BPM)",
-"Red Wine and Cheese (163-173 BPM)", "Early June Garbage Type (163-173 BPM)", "Bounced Checks Type Run (163-173 BPM)",
-"Running early may bedroom garbage type beat (163-173 BPM halftime)", "Running late april psych pop type beat (163-173 BPM halftime)",
-"Running late march brockhampton type beat (163-173 BPM halftime)", "Running dirty indie pop type beat (163-173 BPM)", "Running sadboy indie garbage type beat (163-173 BPM)",
-"Running bedroom pop / DOOM mix (82-87 BPM)", "Running math's valult grab bag (163-173 BPM)", "Running floorida indie rap type beat (163-173 BPM)",
-"Running alt laptop indie pop type beat (163-173 BPM)", "Running alt boom bap type beat (162-172 BPM)", "Running bass music grab bag (162-172 BPM)",
-"Running high energy grab bag (163-173 BPM)", "SalviaFunkSpotifyRemix", "Running sweet as honey type beat (165-175 BPM)", "Apathetic Cloudy Garbage (163 - 173 BPM)",
-"ChillBoomBap @G (163 - 173 BPM Halftime)"]
+filter_keywords = ["Junior", "Sophomore", "Freshman", "Young_Junior", "Young_Senior", "7-10 grade", "TheIndieBlog", "BPM"]
 
 # My "archive time period" playlists
-extraFilterList = ["Junior", "Sophomore", "Freshman", "HS Junior", "HS Senior", "7-10 grade", "TheIndieBlog"]
+extraFilterList = []
 
 class Playlist(object):
 	def __init__(self, name, length):
@@ -110,11 +101,11 @@ def show_tracks(tracks, count, playlist):
 
 
 
-"""Ask for Spotify Username 
-#username = raw_input('Enter Spotify Username:') """
-username = ''
+# Ask for Spotify Username 
+username = raw_input('Enter Spotify Username:')
+# username = ''
 
-# Generate your own @ spotify.developer.dashboard.com? 
+# Generate your own @ https://developer.spotify.com/dashboard/, set redirect to google url below
 client_id = ''
 client_secret = ''
 redirect_uri = 'http://www.google.com/'
@@ -133,20 +124,19 @@ playlists = sp.user_playlists(username)
 while playlists:
 	for pCount, playlist in enumerate(playlists['items']):
 		if playlist['owner']['id'] == username:
-			arbitraryCheck = arbitraryFilter == True and not playlist['name'] in filterList
-			extraCheck = extraNiceArbitraryFilter == True and not playlist['name'] in extraFilterList
-			if arbitraryCheck and extraCheck:
-				totalTrackCount += playlist['tracks']['total']
-				playlistCount.append(Playlist(playlist['name'], playlist['tracks']['total']))
-				currentCount = 1
-				print(playlist['name'])
-				print(' total tracks', playlist['tracks']['total'])
-				results = sp.user_playlist(username, playlist['id'], fields="tracks,next")
-				tracks = results['tracks']
+			if arbitraryFilter and any(word in playlist['name'] for word in filter_keywords):
+				break
+			totalTrackCount += playlist['tracks']['total']
+			playlistCount.append(Playlist(playlist['name'], playlist['tracks']['total']))
+			currentCount = 1
+			print(playlist['name'])
+			print(' total tracks', playlist['tracks']['total'])
+			results = sp.user_playlist(username, playlist['id'], fields="tracks,next")
+			tracks = results['tracks']
+			currentCount = show_tracks(tracks, currentCount, playlist['name'])
+			while tracks['next']:
+				tracks = sp.next(tracks)
 				currentCount = show_tracks(tracks, currentCount, playlist['name'])
-				while tracks['next']:
-					tracks = sp.next(tracks)
-					currentCount = show_tracks(tracks, currentCount, playlist['name'])
 	if playlists['next']:
 	    playlists = sp.next(playlists)
 	else:
@@ -166,7 +156,6 @@ for track in seen:
 
 # Mean and Filter Quality of life improvements
 print("arbitraryFilter = " + str(arbitraryFilter))
-print("extraNiceArbitraryFilter = " + str(extraNiceArbitraryFilter))
 print("\n" + "Mean playlists per track: " + str(round(mean, 4)) + "\n")
 numberRepeatCount = list()
 trackPercent = list()
@@ -194,7 +183,7 @@ seen.sort(key=lambda track: track.count, reverse = True)
 for i in range(0, 31):
 	seen[i].printSelf()
 
-""" Playlist Individuality Graph
+""" Playlist Individuality Graph """
 playlistIndex = np.arange(len(playlistCount))
 plt.ylabel("Playlist Individuality Score")
 plt.bar(playlistIndex, playlistScores)
@@ -203,7 +192,7 @@ plt.axis('auto')
 plt.grid(True)
 plt.annotate("Score = (Sum of 1 / n) / trackCount, n = track's playlist instances", xy=(.3, .95), xycoords='axes fraction')
 plt.yticks(np.arange(0, playlistScores[0], step = 10.0), rotation='vertical')
-plt.show() """
+plt.show() 
 
 """ Track Playlist Distribution Graph """
 trackIndex = np.arange(len(repeatCount))
